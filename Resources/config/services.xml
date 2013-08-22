@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="nbboe_crawler.crawler.class">NachoBrito\BOECrawlerBundle\Services\BOECrawler</parameter>
+        <parameter key="nbboe_crawler.vector_space_model.class">NachoBrito\BOECrawlerBundle\Services\VectorSpaceModel</parameter>
+        <parameter key="nbboe_crawler.stemmer.class">NachoBrito\BOECrawlerBundle\Services\Stemmer</parameter>
+        <parameter key="nbboe_crawler.stopwords.class">NachoBrito\BOECrawlerBundle\Services\StopWordsProvider</parameter>
+        <parameter key="nbboe_crawler.search.class">NachoBrito\BOECrawlerBundle\Services\SearchService</parameter>
+    </parameters>
+    <services>
+        <service id="nbboe_crawler.crawler" class="%nbboe_crawler.crawler.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="logger" />            
+        </service>
+
+        <service id="nbboe_crawler.vector_space_model" class="%nbboe_crawler.vector_space_model.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="nbboe_crawler.stemmer" />                        
+            <argument type="service" id="nbboe_crawler.stopwords" />          
+            <argument type="service" id="logger" />              
+        </service>
+        <service id="nbboe_crawler.search_service" class="%nbboe_crawler.search.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="nbboe_crawler.stemmer" />            
+            <argument type="service" id="nbboe_crawler.stopwords" />          
+            <argument type="service" id="logger" />              
+        </service>
+        
+        <service id="nbboe_crawler.stemmer" class="%nbboe_crawler.stemmer.class%">
+        </service>
+        <service id="nbboe_crawler.stopwords" class="%nbboe_crawler.stopwords.class%">
+        </service>
+        
+    </services>
+
+</container>
